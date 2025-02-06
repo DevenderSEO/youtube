@@ -1,6 +1,6 @@
-const axios = require('axios');
-const fs = require('fs');
-const path = require('path');
+import axios from 'axios';
+import fs from 'fs';
+import path from 'path';
 
 function extractVideoId(url) {
   const videoIdMatch = url.match(/(?:v=|\/)([0-9A-Za-z_-]{11}).*/);
@@ -33,23 +33,32 @@ async function downloadThumbnail(thumbnailUrl, directory) {
     });
   } catch (error) {
     console.error('Error downloading thumbnail:', error);
+    throw error;
   }
 }
 
 function displayStatus(message) {
-  console.log(message);
+  document.getElementById('status').innerText = message;
 }
 
-const url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-const videoId = extractVideoId(url);
+document.getElementById('downloadForm').addEventListener('submit', async function(event) {
+  event.preventDefault();
+  const url = document.getElementById('urlInput').value;
+  const videoId = extractVideoId(url);
 
-if (videoId) {
-  const thumbnailUrl = generateThumbnailUrl(videoId);
-  downloadThumbnail(thumbnailUrl, "./thumbnails/").then(() => {
-    displayStatus("Thumbnail downloaded successfully!");
-  }).catch((error) => {
-    console.error('Error:', error);
-  });
-} else {
-  console.error('Invalid YouTube URL');
-}
+  if (videoId) {
+    try {
+      const thumbnailUrl = generateThumbnailUrl(videoId);
+      await downloadThumbnail(thumbnailUrl, "./thumbnails/");
+      displayStatus("Thumbnail downloaded successfully!");
+      document.getElementById('thumbnail').src = thumbnailUrl;
+      document.getElementById('thumbnail').style.display = 'block';
+    } catch (error) {
+      console.error('Error:', error);
+      displayStatus("Failed to download thumbnail.");
+    }
+  } else {
+    console.error('Invalid YouTube URL');
+    displayStatus("Invalid YouTube URL.");
+  }
+});

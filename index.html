@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube Thumbnail Downloader</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    input[type="text"] {
+      width: 300px;
+      padding: 8px;
+      margin-right: 10px;
+    }
+    button {
+      padding: 8px 16px;
+    }
+    #thumbnail {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>YouTube Thumbnail Downloader</h1>
+  <form id="downloadForm">
+    <input type="text" id="urlInput" placeholder="Enter YouTube URL" required>
+    <button type="submit">Download Thumbnail</button>
+  </form>
+  <div id="status"></div>
+  <img id="thumbnail" src="" alt="Thumbnail" style="display: none;">
+  <script type="module" src="/index.js"></script>
+</body>
+</html>
